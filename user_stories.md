@@ -8,9 +8,10 @@ User Stories:
 7. As a user, I want to filter movies by specific directors, so I can watch many of their works. 
 8. As a registered user, I want to be able to interact with others' reviews such as commenting and liking, so reviews can become popular.
 9. As a user, I want to filter movies by genre, so I can find similar shows to those I like.
-10. 
-11. 
-12. 
+10. As a registered user, I want to create a watchlist of movies I plan to watch, so that I can keep track of titles I'm interested in without losing them.
+11. As a user, I want to search for movies by actor, so that I can discover more films featuring Actors/Actresses I enjoy.
+12. As a registered user, I want to view statistics about my watching habits (such as favorite genres and total films watched), so that I can better understand my preferences.
+ 
 
 Exceptions:
 1. Exception: Media title does not exist. If a user tries to search for a specific media by title that does not exist in the system, the search will give back a message stating that the title cannot be found and encourage the user to search again.
@@ -22,6 +23,6 @@ Exceptions:
 7. Exception: Email address associated with the account is not a real address. If a user enters an email address that is not valid, it will prompt the user to re-enter the address.
 8. Exception: User submits a review while not logged in. If a user attempts to submit a review without being logged in, the system will prompt them to the login/signup page.
 9. Exception: User tries to edit or delete another user’s review. If a user attempts to change a review they do not own, the system will block the action and display an “Unauthorized action” error message.
-10. 
-11. 
-12. 
+10. Exception: User's session expires mid-action. If a user's login session times out while they are writing a review or rating a film, the system will save their progress as a draft and redirect them to the login page, restoring their work after they log back in.
+11. Exception: Duplicate friend request. If a user sends a friend request to someone they have already sent a pending request to, the system will notify them that a request is already pending and prevent a duplicate from being sent.
+12. Exception: User attempts to add a title already in their watchlist. If a user tries to add a movie to their watchlist that is already saved there, the system will display a message indicating the title is already on their list and offer to remove it instead.
