@@ -89,7 +89,7 @@ Response:
   "watched": false
 }
 
-5. Get Movies Watched by User — /users/{user_id}/watch-history (GET)
+## 5. Get Movies Watched by User — /users/{user_id}/watch-history (GET)
 
 This endpoint returns the list of movies a specific user has already watched. It can be used to show watch history, avoid recommending already watched titles, or filter recommendation results.
 
@@ -129,7 +129,7 @@ GET /users/101/watch-history?media_type=movie&limit=10&sort=recent
   }
 ]
 
-6. Add Movie to Watch History — /users/{user_id}/watch-history (POST)
+## 6. Add Movie to Watch History — /users/{user_id}/watch-history (POST)
 
 This endpoint lets a user mark a movie as watched by adding it to their watch history.
 
