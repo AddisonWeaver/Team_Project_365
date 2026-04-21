@@ -32,3 +32,21 @@ Alice decides on a number to rate the movie out of five, then adds her rating. T
 The system saves her rating and returns a message saying the rating was added successfully.
 
 This flow shows how a registered user can search for a movie and rate it.
+
+## Example Flow: Registered User Adds a Movie to Watch History and Views Watched Movies
+This flow connects to the user story:
+As a registered user, I want to mark movies or TV shows as watched, so that I can keep track of what I have already seen and get better recommendations.
+
+Addie is a registered user who just finished watching Top Gun and wants to add it to her watch history. First, Addie searches for the movie by calling GET /movies/search?title=Top%20Gun&user_id=101. The system returns the movie details, including that the movie has movie_id = 1.
+
+Addie then adds the movie to her watch history. To do this she:
+
+calls POST /users/101/watch-history
+includes the movie_id
+includes the date_watched
+
+The system saves the movie to her watch history and returns a message saying the movie was added successfully.
+
+Later, Addie wants to see all the movies she has watched. She calls GET /users/101/watch-history?media_type=movie&sort=recent. The system returns her watched movie list, including Top Gun.
+
+This flow shows how a registered user can track movies they have watched and retrieve their watch history.
