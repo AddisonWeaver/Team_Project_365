@@ -88,3 +88,60 @@ Response:
   "actors": ["Pamela Anderson", "Liam Neeson"],
   "watched": false
 }
+
+5. Get Movies Watched by User — /users/{user_id}/watch-history (GET)
+
+This endpoint returns the list of movies a specific user has already watched. It can be used to show watch history, avoid recommending already watched titles, or filter recommendation results.
+
+Path Parameters:
+
+user_id (required): The ID of the user
+
+Query Parameters:
+
+media_type (optional): Filter by movie or tv
+limit (optional): Maximum number of watched titles to return
+sort (optional): Sort order such as recent, rating, or title
+
+Example Request:
+GET /users/101/watch-history?media_type=movie&limit=10&sort=recent
+
+[
+  {
+    "movie_id": 1,
+    "title": "Inception",
+    "media_type": "movie",
+    "genre": ["Action", "Sci-Fi"],
+    "average_rating": 4.7,
+    "number_of_reviews": 200,
+    "actors": ["Leonardo DiCaprio", "Joseph Gordon-Levitt"],
+    "date_watched": "2026-04-18"
+  },
+  {
+    "movie_id": 12,
+    "title": "Interstellar",
+    "media_type": "movie",
+    "genre": ["Adventure", "Drama", "Sci-Fi"],
+    "average_rating": 4.8,
+    "number_of_reviews": 340,
+    "actors": ["Matthew McConaughey", "Anne Hathaway"],
+    "date_watched": "2026-04-10"
+  }
+]
+
+6. Add Movie to Watch History — /users/{user_id}/watch-history (POST)
+
+This endpoint lets a user mark a movie as watched by adding it to their watch history.
+
+Path Parameters:
+
+user_id (required): The ID of the user
+Request: {
+  "movie_id": 1,
+  "date_watched": "2026-04-18"
+}
+
+Response: {
+  "watch_history_id": 55,
+  "message": "Movie added to watch history successfully"
+}
