@@ -15,3 +15,20 @@ Misha then writes and submits her review. To do this she:
 The system saves her review and returns a message saying the review was added successfully.
 
 This flow shows how a registered user can search for a movie and submit a review for it.
+
+## Example Flow: Registered User Leaves a Rating on a Movie
+
+This flow connects to the user story:  
+**As a registered user, I want to rate a movie or TV show, so that I can contribute to its overall ranking and track my opinions.**
+
+Alice is a registered user who wants to leave a rating on "Hail Mary" after watching it in theaters. First, Alice searches for the movie by calling `GET /movies/search?title=HailMary&user_id=115`. The system returns the movie details, including that the movie has `movie_id = 135`.
+
+Alice decides on a number to rate the movie out of five, then adds her rating. To do this she:
+
+- calls `POST /movies/135/ratings`
+- includes her `user_id`
+- includes her `rating` (an integer between 1 and 5, inclusive)
+
+The system saves her rating and returns a message saying the rating was added successfully.
+
+This flow shows how a registered user can search for a movie and rate it.
