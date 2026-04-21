@@ -37,3 +37,19 @@ Response:
   "review_id": 1,
   "message": "Review added successfully"
 }
+
+
+## 3. Add Rating to Movie - /movies/{movie_id}/ratings (POST)
+This endpoint lets a user add a rating (integer value between 1 and 5, inclusive) for a specific movie. The rating is saved and can be seen by other users.
+
+Request:
+{
+  "user_id": 101,
+  "rating": 3
+}
+
+Response:
+{
+  "rating_id": 3,
+  "message": "Rating added successfully"
+}
