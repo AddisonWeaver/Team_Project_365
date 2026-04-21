@@ -146,3 +146,98 @@ Response: {
   "watch_history_id": 55,
   "message": "Movie added to watch history successfully"
 }
+
+## 7. Get Popular Movie Recommendations - /movies/recommendations/popular (GET)
+This endpoint returns a ranked list of movies based on a combined "popularity score" that takes into account both the average rating and number of reviews. This prevents niche movies with very few reviews and high ratings from dominating results.
+
+Query Parameters:
+
+- `limit` (optional): Maximum number of results to return (default: 10)
+- `genre` (optional): Restrict recommendations to a specific genre
+- `user_id` (optional): Used to check if the user has already watched any of the movies
+- `exclude_watched` (optional): If true and user_id is provided, already-watched movies are removed from results
+
+Example Request:
+GET /movies/recommendations/popular?genre=Sci-Fi&user_id=101&exclude_watched=true&limit=3
+
+Response:
+[
+  {
+    "movie_id": 12,
+    "title": "Interstellar",
+    "media_type": "movie",
+    "genre": ["Adventure", "Drama", "Sci-Fi"],
+    "average_rating": 4.8,
+    "number_of_reviews": 340,
+    "popularity_score": 97.2,
+    "watched": false
+  },
+  {
+    "movie_id": 7,
+    "title": "The Martian",
+    "media_type": "movie",
+    "genre": ["Adventure", "Sci-Fi"],
+    "average_rating": 4.5,
+    "number_of_reviews": 280,
+    "popularity_score": 91.4,
+    "watched": false
+  },
+  {
+    "movie_id": 23,
+    "title": "Arrival",
+    "media_type": "movie",
+    "genre": ["Drama", "Sci-Fi"],
+    "average_rating": 4.6,
+    "number_of_reviews": 195,
+    "popularity_score": 88.7,
+    "watched": false
+  }
+]
+
+
+## 8. Get Movie Recommendations by Actor - /movies/recommendations/by-actor (GET)
+This endpoint returns movies featuring a specified actor, sorted by popularity score. You can have it filter out titles the user has already watched, making it easy to explore an actor's filmography without rewatching.
+
+Query Parameters:
+
+- `actor` (required): The name of the actor to search by
+- `limit` (optional): Maximum number of results to return (default: 10)
+- `user_id` (optional): Used to check if the user has already watched any of the movies
+- `exclude_watched` (optional): If true and user_id is provided, already-watched movies are filtered out
+
+Example Request:
+GET /movies/recommendations/by-actor?actor=Leonardo+DiCaprio&user_id=101&exclude_watched=true&limit=3
+
+Response:
+[
+  {
+    "movie_id": 9,
+    "title": "The Wolf of Wall Street",
+    "media_type": "movie",
+    "genre": ["Biography", "Comedy", "Crime"],
+    "average_rating": 4.6,
+    "number_of_reviews": 420,
+    "actors": ["Leonardo DiCaprio", "Jonah Hill"],
+    "watched": false
+  },
+  {
+    "movie_id": 5,
+    "title": "The Revenant",
+    "media_type": "movie",
+    "genre": ["Action", "Adventure", "Drama"],
+    "average_rating": 4.4,
+    "number_of_reviews": 310,
+    "actors": ["Leonardo DiCaprio", "Tom Hardy"],
+    "watched": false
+  },
+  {
+    "movie_id": 14,
+    "title": "Shutter Island",
+    "media_type": "movie",
+    "genre": ["Mystery", "Thriller"],
+    "average_rating": 4.3,
+    "number_of_reviews": 275,
+    "actors": ["Leonardo DiCaprio", "Mark Ruffalo"],
+    "watched": false
+  }
+]
