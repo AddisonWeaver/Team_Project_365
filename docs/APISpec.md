@@ -136,6 +136,7 @@ This endpoint lets a user mark a movie as watched by adding it to their watch hi
 Path Parameters:
 
 user_id (required): The ID of the user
+
 Request: {
   "movie_id": 1,
   "date_watched": "2026-04-18"
