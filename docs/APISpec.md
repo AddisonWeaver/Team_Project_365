@@ -53,3 +53,38 @@ Response:
   "rating_id": 3,
   "message": "Rating added successfully"
 }
+
+
+## 4. Filter Movies by Genre - /movies/filter/genre (GET)
+This endpoint lets users filter movies by genre attribute.
+
+Query Parameters:
+
+- `genre` (required): The name of the movie
+- `user_id` (optional): Used to check if the user has already watched any of the movies
+- `limit` (optional): Used to limit the number of movies that show up after the filter has been applied
+
+Example Request:
+GET /movies/filter?genre=Action&user_id=101&limit=2
+
+Response:
+{
+  "movie_id": 1,
+  "title": "Inception",
+  "media_type": "movie",
+  "genre": ["Action", "Sci-Fi"],
+  "average_rating": 4.7,
+  "number_of_reviews": 200,
+  "actors": ["Leonardo DiCaprio", "Joseph Gordon-Levitt"],
+  "watched": false
+}
+{
+  "movie_id": 17,
+  "title": "Naked Gun",
+  "media_type": "movie",
+  "genre": ["Action", "Comedy"],
+  "average_rating": 3.2,
+  "number_of_reviews": 56,
+  "actors": ["Pamela Anderson", "Liam Neeson"],
+  "watched": false
+}
