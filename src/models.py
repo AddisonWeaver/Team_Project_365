@@ -62,7 +62,7 @@ class Actor(Base):
     actor_id = Column(Integer, primary_key=True, index=True)
     name = Column(String(255), nullable=False)
     movies = relationship("Movie", secondary=movie_actors,
-                          back_populates="movies")
+                          back_populates="actors")
 
 
 class Review(Base):
