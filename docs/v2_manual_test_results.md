@@ -27,7 +27,7 @@ curl -X 'GET' \
   -H 'accept: application/json'
 
 Response:
-{"movie_id":1,"title":"Top Gun","media_type":"movie","genre":["Action","Drama"],"average_rating":null,"number_of_reviews":0,"actors":["Tom Cruise","Val Kilmer"],"watched":false}
+{"movie_id":1,"title":"Top Gun","media_type":"movie","genre":["Action","Drama"],"average_rating":null,"number_of_reviews":0,"actors":["Tom Cruise","Val Kilmer"],"watched":true}
 
 ## Step 2 — Add review to Top Gun (POST — modifies database)
 
@@ -51,7 +51,7 @@ curl -X 'GET' \
   -H 'accept: application/json'
 
 Response:
-{"movie_id":1,"title":"Top Gun","media_type":"movie","genre":["Action","Drama"],"average_rating":null,"number_of_reviews":1,"actors":["Tom Cruise","Val Kilmer"],"watched":false}
+{"movie_id":1,"title":"Top Gun","media_type":"movie","genre":["Action","Drama"],"average_rating":null,"number_of_reviews":1,"actors":["Tom Cruise","Val Kilmer"],"watched":true}
 
 The value of the number_of_reviews attribute has gone up by 1.
 
@@ -83,7 +83,7 @@ curl -X 'GET' \
   -H 'accept: application/json'
 
 Response:
-{"movie_id":1,"title":"Top Gun","media_type":"movie","genre":["Action","Drama"],"average_rating":null,"number_of_reviews":1,"actors":["Tom Cruise","Val Kilmer"],"watched":false}
+{"movie_id":1,"title":"Top Gun","media_type":"movie","genre":["Action","Drama"],"average_rating":null,"number_of_reviews":1,"actors":["Tom Cruise","Val Kilmer"],"watched":true}
 
 ## Step 2 — Add rating on Top Gun (POST — modifies database)
 
@@ -106,6 +106,6 @@ curl -X 'GET' \
   -H 'accept: application/json'
 
 Response:
-{"movie_id":1,"title":"Top Gun","media_type":"movie","genre":["Action","Drama"],"average_rating":4,"number_of_reviews":1,"actors":["Tom Cruise","Val Kilmer"],"watched":false}
+{"movie_id":1,"title":"Top Gun","media_type":"movie","genre":["Action","Drama"],"average_rating":4,"number_of_reviews":1,"actors":["Tom Cruise","Val Kilmer"],"watched":true}
 
 The value of average_rating has increased to 4.
