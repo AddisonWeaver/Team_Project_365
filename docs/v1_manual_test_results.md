@@ -1,4 +1,4 @@
-# Example Workflow
+# Example Workflow #3
 
 ## Registered User Adds a Movie to Watch History and Views Watched Movies
 
