@@ -10,17 +10,6 @@ from src.models import Movie, Genre, Actor, Review, Rating, WatchHistory
 router = APIRouter(prefix="/movies", tags=["movies"])
 
 
-class ReviewCreate(BaseModel):
-    user_id: int
-    review_text: str
-    contains_spoilers: bool = False
-
-
-class RatingCreate(BaseModel):
-    user_id: int
-    rating: int
-
-
 def movie_to_dict(movie: Movie, user_id: Optional[int] = None, db: Session = None):
     avg_rating = (
         db.query(func.avg(Rating.rating))
@@ -66,42 +55,6 @@ def search_movie(
     if not movie:
         raise HTTPException(status_code=404, detail="Movie not found")
     return movie_to_dict(movie, user_id=user_id, db=db)
-
-
-@router.post("/{movie_id}/reviews")
-def add_review(movie_id: int, body: ReviewCreate, db: Session = Depends(get_db)):
-    movie = db.query(Movie).filter(Movie.movie_id == movie_id).first()
-    if not movie:
-        raise HTTPException(status_code=404, detail="Movie not found")
-    review = Review(
-        movie_id=movie_id,
-        user_id=body.user_id,
-        review_text=body.review_text,
-        contains_spoilers=body.contains_spoilers,
-    )
-    db.add(review)
-    db.commit()
-    db.refresh(review)
-    return {"review_id": review.review_id, "message": "Review added successfully"}
-
-
-@router.post("/{movie_id}/ratings")
-def add_rating(movie_id: int, body: RatingCreate, db: Session = Depends(get_db)):
-    if not 1 <= body.rating <= 5:
-        raise HTTPException(
-            status_code=400, detail="Rating must be between 1 and 5")
-    movie = db.query(Movie).filter(Movie.movie_id == movie_id).first()
-    if not movie:
-        raise HTTPException(status_code=404, detail="Movie not found")
-    rating = Rating(
-        movie_id=movie_id,
-        user_id=body.user_id,
-        rating=body.rating,
-    )
-    db.add(rating)
-    db.commit()
-    db.refresh(rating)
-    return {"rating_id": rating.rating_id, "message": "Rating added successfully"}
 
 
 @router.get("/filter/genre")
