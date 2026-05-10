@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from src.api.routers import movies, users
+from src.api.routers import movies, ratings, reviews, users
 
 app = FastAPI(
     title="Entertainment Tracker API",
@@ -9,6 +9,8 @@ app = FastAPI(
 
 app.include_router(movies.router)
 app.include_router(users.router)
+app.include_router(ratings.router)
+app.include_router(reviews.router)
 
 
 @app.get("/")
