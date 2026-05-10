@@ -8,7 +8,7 @@ import sqlalchemy
 from src import database as db
 from src.models import Movie, Review
 
-router = APIRouter(prefix="/movies", tags=["movies"])
+router = APIRouter(prefix="/reviews", tags=["reviews"])
 
 
 class ReviewCreate(BaseModel):

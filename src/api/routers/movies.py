@@ -2,7 +2,6 @@ from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from typing import Optional
-from pydantic import BaseModel
 
 from src.database import get_db
 from src.models import Movie, Genre, Actor, Review, Rating, WatchHistory
