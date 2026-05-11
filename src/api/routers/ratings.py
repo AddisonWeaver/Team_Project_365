@@ -5,7 +5,7 @@ from typing import List
 
 import sqlalchemy
 from src import database as db
-from database import get_db
+from src.database import get_db
 from src.models import Movie, Rating
 
 router = APIRouter(prefix="/ratings", tags=["ratings"])
@@ -44,7 +44,7 @@ def add_rating(movie_id: int, body: RatingCreate, db: Session = Depends(get_db))
 def get_reviews(movie_id: int) -> List[FormattedRating]:
 
     # return the movie, username, and rating of all ratings for the specified movie
-    with db.engine.begin() as connection:
+    with db.get_engine().begin() as connection:
         result = connection.execute(
             sqlalchemy.text(
                 """

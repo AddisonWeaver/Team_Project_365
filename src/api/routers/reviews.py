@@ -5,7 +5,7 @@ from typing import List
 
 import sqlalchemy
 from src import database as db
-from database import get_db
+from src.database import get_db
 from src.models import Movie, Review
 
 router = APIRouter(prefix="/reviews", tags=["reviews"])
@@ -44,7 +44,7 @@ def get_reviews(movie_id: int, include_spoilers: bool) -> List[FormattedReview]:
 
     include_spoilers = False if include_spoilers is None else include_spoilers
     # return the movie, username, and review text of all reviews for the specified movie (w or wo spoilers depending on the val of include_spoilers)
-    with db.engine.begin() as connection:
+    with db.get_engine().begin() as connection:
         result = connection.execute(
             sqlalchemy.text(
                 """
