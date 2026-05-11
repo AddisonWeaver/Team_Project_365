@@ -4,7 +4,6 @@ from pydantic import BaseModel
 from typing import List
 
 import sqlalchemy
-from src import database as db
 from src.database import get_db
 from src.models import Movie, Rating
 
@@ -41,29 +40,31 @@ def add_rating(movie_id: int, body: RatingCreate, db: Session = Depends(get_db))
 
 
 @router.get("/{movie_id}/ratings", response_model=List[FormattedRating])
-def get_reviews(movie_id: int) -> List[FormattedRating]:
+def get_reviews(
+    movie_id: int,
+    db: Session = Depends(get_db),
+) -> List[FormattedRating]:
 
     # return the movie, username, and rating of all ratings for the specified movie
-    with db.get_engine().begin() as connection:
-        result = connection.execute(
-            sqlalchemy.text(
-                """
-                SELECT username, rating
-                FROM ratings
-                JOIN movies ON movies.movie_id = ratings.movie_id
-                JOIN users ON users.user_id = ratings.user_id
-                WHERE ratings.movie_id = :id
-                ORDER BY ratings.created_at ASC
-                """
-            ), [{"id": movie_id}]
-        ).all()
+    result = db.execute(
+        sqlalchemy.text(
+            """
+            SELECT username, rating
+            FROM ratings
+            JOIN movies ON movies.movie_id = ratings.movie_id
+            JOIN users ON users.user_id = ratings.user_id
+            WHERE ratings.movie_id = :id
+            ORDER BY ratings.created_at ASC
+            """
+        ), {"id": movie_id}
+    ).all()
 
-        ratings = []
-        for row in result:
-            ratings.append(
-                FormattedRating(
-                    username=row.username,
-                    review_text=row.rating,
-                )
+    ratings = []
+    for row in result:
+        ratings.append(
+            FormattedRating(
+                username=row.username,
+                review_text=row.rating,
             )
+        )
     return ratings

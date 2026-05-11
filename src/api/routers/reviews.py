@@ -4,7 +4,6 @@ from pydantic import BaseModel
 from typing import List
 
 import sqlalchemy
-from src import database as db
 from src.database import get_db
 from src.models import Movie, Review
 
@@ -40,30 +39,33 @@ def add_review(movie_id: int, body: ReviewCreate, db: Session = Depends(get_db))
 
 
 @router.get("/{movie_id}/reviews", response_model=List[FormattedReview])
-def get_reviews(movie_id: int, include_spoilers: bool) -> List[FormattedReview]:
+def get_reviews(
+    movie_id: int,
+    include_spoilers: bool,
+    db: Session = Depends(get_db),
+) -> List[FormattedReview]:
 
     include_spoilers = False if include_spoilers is None else include_spoilers
     # return the movie, username, and review text of all reviews for the specified movie (w or wo spoilers depending on the val of include_spoilers)
-    with db.get_engine().begin() as connection:
-        result = connection.execute(
-            sqlalchemy.text(
-                """
-                SELECT username, review_text
-                FROM reviews
-                JOIN movies ON movies.movie_id = reviews.movie_id
-                JOIN users ON users.user_id = reviews.user_id
-                WHERE reviews.movie_id = :id AND contains_spoilers = :spoilers
-                ORDER BY reviews.created_at ASC
-                """
-            ), [{"id": movie_id, "spoilers": include_spoilers}]
-        ).all()
+    result = db.execute(
+        sqlalchemy.text(
+            """
+            SELECT username, review_text
+            FROM reviews
+            JOIN movies ON movies.movie_id = reviews.movie_id
+            JOIN users ON users.user_id = reviews.user_id
+            WHERE reviews.movie_id = :id AND contains_spoilers = :spoilers
+            ORDER BY reviews.created_at ASC
+            """
+        ), {"id": movie_id, "spoilers": include_spoilers}
+    ).all()
 
-        reviews = []
-        for row in result:
-            reviews.append(
-                FormattedReview(
-                    username=row.username,
-                    review_text=row.review_text,
-                )
+    reviews = []
+    for row in result:
+        reviews.append(
+            FormattedReview(
+                username=row.username,
+                review_text=row.review_text,
             )
+        )
     return reviews
