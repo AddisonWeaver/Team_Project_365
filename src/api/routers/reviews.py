@@ -2,10 +2,10 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from pydantic import BaseModel
 from typing import List
-from src.database import get_db
 
 import sqlalchemy
 from src import database as db
+from database import get_db
 from src.models import Movie, Review
 
 router = APIRouter(prefix="/reviews", tags=["reviews"])
