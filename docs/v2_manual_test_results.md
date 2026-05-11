@@ -44,16 +44,21 @@ curl -X 'POST' \
 Response:
 {"review_id": 1,"message": "Review added successfully"}
 
-## Step 3 — View updated review count (repeat Search)
+## Step 3 — Get added review for the movie "Top Gun"
+
+Getting reviews without spoilers as the review added above does not have spoilers.
 
 curl -X 'GET' \
-  'https://team-project-365.onrender.com/movies/search?title=Top%20Gun&user_id=1' \
+  'https://team-project-365-ha53.onrender.com/reviews/1/reviews?include_spoilers=false' \
   -H 'accept: application/json'
 
 Response:
-{"movie_id":1,"title":"Top Gun","media_type":"movie","genre":["Action","Drama"],"average_rating":null,"number_of_reviews":1,"actors":["Tom Cruise","Val Kilmer"],"watched":true}
-
-The value of the number_of_reviews attribute has gone up by 1.
+[
+  {
+    "username": "Addi-ctedToMovies",
+    "review_text": "Loved the movie! Would def recommend."
+  }
+]
 
 # Example Workflow #2
 
@@ -99,13 +104,16 @@ curl -X 'POST' \
 Response:
 {"rating_id": 1,"message": "Rating added successfully"}
 
-## Step 3 — View update to average rating (repeat Search)
+## Step 3 — Get ratings for the movie "Top Gun"
 
 curl -X 'GET' \
-  'https://team-project-365.onrender.com/users/1/watch-history?media_type=movie&sort=recent' \
+  'https://team-project-365-ha53.onrender.com/ratings/1/ratings' \
   -H 'accept: application/json'
 
 Response:
-{"movie_id":1,"title":"Top Gun","media_type":"movie","genre":["Action","Drama"],"average_rating":4,"number_of_reviews":1,"actors":["Tom Cruise","Val Kilmer"],"watched":true}
-
-The value of average_rating has increased to 4.
+[
+  {
+    "username": "Addi-ctedToMovies",
+    "rating": 4
+  }
+]
