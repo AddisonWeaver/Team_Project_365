@@ -17,7 +17,7 @@ class RatingCreate(BaseModel):
 
 class FormattedRating(BaseModel):
     username: str
-    review_text: str
+    rating: int
 
 
 @router.post("/{movie_id}/ratings")
@@ -64,7 +64,7 @@ def get_reviews(
         ratings.append(
             FormattedRating(
                 username=row.username,
-                review_text=row.rating,
+                rating=row.rating,
             )
         )
     return ratings
