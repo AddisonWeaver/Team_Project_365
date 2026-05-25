@@ -11,8 +11,13 @@ app.include_router(movies.router)
 app.include_router(users.router)
 app.include_router(ratings.router)
 app.include_router(reviews.router)
+# Avery #9.1 / #10.1 / Anthony #8.7: canonical /movies/{movie_id}/(reviews|ratings) paths
+app.include_router(reviews.movies_alias_router)
+app.include_router(ratings.movies_alias_router)
 
 
 @app.get("/")
 def root():
-    return {"message": "Welcome to the Entertainment Tracker API. Visit /docs for interactive documentation."}
+    return {
+        "message": "Welcome to the Entertainment Tracker API. Visit /docs for interactive documentation."
+    }
