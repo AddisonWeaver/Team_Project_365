@@ -123,7 +123,45 @@ At `REPEATABLE READ`, PostgreSQL takes a consistent snapshot of the database at 
 
 ---
 
-## Case 3: 
+## Case 3:  Non-Repeatable Read — Movie Rating Aggregation
 
+### The Phenomenon
+
+A **non-repeatable read** occurs when a transaction reads the same row twice and gets a different value each time because another transaction updated and committed that row in between the two reads.
+
+### How It Occurs in Our Service
+
+Our `GET /ratings` endpoint calculates the average rating for a given movie using data from the ratings table. Suppose a transaction reads the average rating for a movie to display for a user. While that transaction is still running, another user adds a rating for the same movie. If the first transaction queries the same movie rating data again, it may calculate a different value within the same transaction. This creates inconsistent application behavior because one transaction no longer sees a stable view of the movie's rating data.
+
+### Sequence Diagram
+
+```
+Client (Trending Calc)        Database            Client (Update Rating)
+        |                           |                         |
+        |-- SELECT AVG(rating) ---->|                         |
+        |   movie_id=10             |                         |
+        |<-- avg = 4.2 -------------|                         |
+        |                           |<-- UPDATE ratings ------|
+        |                           |    SET rating = 1       |
+        |                           |    WHERE user_id=5      |
+        |                           |    AND movie_id=10      |
+        |                           |    COMMIT               |
+        |                           |                         |
+        |-- SELECT AVG(rating) ---->|                         |
+        |   movie_id=10             |                         |
+        |<-- avg = 3.8 -------------|                         |
+        |                           |                         |
+```
+
+### What We Do To Ensure Isolation
+
+The best fix is to run aggregation and analytics queries under the REPEATABLE READ isolation level:
+
+with engine.connect().execution_options(isolation_level="REPEATABLE READ") as conn:
+    with conn.begin():
+        ...
+
+
+At `REPEATABLE READ`, PostgreSQL takes a consistent snapshot of the database at the start of the transaction, and all subsequent reads within that transaction see only that snapshot. This is important for aggregation queries as they depend on consistent repeated reads of a dataset. Having a snapshot prevents averages from changing midway through a calculation, preventing a non-repeatable read.
 
 ---
