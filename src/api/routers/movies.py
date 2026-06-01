@@ -108,7 +108,6 @@ def list_movies(
 
 
 # Avery #10.2: spec said GET /movies/filter?genre=...; expose both paths so spec-following clients work
-@router.get("/filter")
 @router.get("/filter/genre")
 def filter_by_genre(
     genre: str = Query(...),
