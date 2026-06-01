@@ -33,8 +33,7 @@ class RatingsResponse(BaseModel):
 @router.post("/{movie_id}/ratings")
 def add_rating(movie_id: int, body: RatingCreate, db: Session = Depends(get_db)):
     if not 1 <= body.rating <= 5:
-        raise HTTPException(
-            status_code=400, detail="Rating must be between 1 and 5")
+        raise HTTPException(status_code=400, detail="Rating must be between 1 and 5")
     movie = db.query(Movie).filter(Movie.movie_id == movie_id).first()
     if not movie:
         raise HTTPException(status_code=404, detail="Movie not found")
@@ -95,8 +94,7 @@ def get_ratings(  # Avery #9.9: renamed from get_reviews to get_ratings
         {"id": movie_id},
     ).all()
 
-    items = [FormattedRating(username=r.username, rating=r.rating)
-             for r in result]
+    items = [FormattedRating(username=r.username, rating=r.rating) for r in result]
     # Anthony #5.10: include average_rating and rating_count in the response
     if items:
         avg = round(sum(i.rating for i in items) / len(items), 2)
@@ -110,8 +108,7 @@ def get_ratings(  # Avery #9.9: renamed from get_reviews to get_ratings
 
 
 # Avery #9.1 / #10.1 / Anthony #8.7: canonical /movies/{movie_id}/ratings paths from API spec
-movies_alias_router.add_api_route(
-    "/{movie_id}/ratings", add_rating, methods=["POST"])
+movies_alias_router.add_api_route("/{movie_id}/ratings", add_rating, methods=["POST"])
 movies_alias_router.add_api_route(
     "/{movie_id}/ratings",
     get_ratings,

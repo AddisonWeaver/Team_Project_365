@@ -20,8 +20,7 @@ REVIEW_MAX_LEN = 2000
 
 class ReviewCreate(BaseModel):
     user_id: int
-    review_text: str = Field(..., min_length=REVIEW_MIN_LEN,
-                             max_length=REVIEW_MAX_LEN)
+    review_text: str = Field(..., min_length=REVIEW_MIN_LEN, max_length=REVIEW_MAX_LEN)
     contains_spoilers: bool = False
 
 
@@ -143,8 +142,7 @@ def get_reviews(
 
 # Avery #9.1 / #10.1 / Anthony #8.7: register the same handlers under the canonical
 # /movies/{movie_id}/reviews paths the API spec describes.
-movies_alias_router.add_api_route(
-    "/{movie_id}/reviews", add_review, methods=["POST"])
+movies_alias_router.add_api_route("/{movie_id}/reviews", add_review, methods=["POST"])
 movies_alias_router.add_api_route(
     "/{movie_id}/reviews",
     get_reviews,

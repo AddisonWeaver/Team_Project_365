@@ -31,8 +31,7 @@ def _movies_to_dicts(movies, db: Session, user_id: Optional[int] = None) -> List
     }
 
     review_rows = (
-        db.query(Review.movie_id, func.count(
-            Review.review_id).label("review_count"))
+        db.query(Review.movie_id, func.count(Review.review_id).label("review_count"))
         .filter(Review.movie_id.in_(movie_ids))
         .group_by(Review.movie_id)
         .all()
@@ -44,8 +43,7 @@ def _movies_to_dicts(movies, db: Session, user_id: Optional[int] = None) -> List
         watched_rows = (
             db.query(WatchHistory.movie_id)
             .filter(
-                WatchHistory.user_id == user_id, WatchHistory.movie_id.in_(
-                    movie_ids)
+                WatchHistory.user_id == user_id, WatchHistory.movie_id.in_(movie_ids)
             )
             .distinct()
             .all()
@@ -88,8 +86,7 @@ def search_movie(
 ):
     _require_user(db, user_id)
     # Jared #1.1 / Anthony #5.1 / Avery #10.4: return list of matches instead of .first()
-    movies = db.query(Movie).filter(
-        Movie.title.ilike(f"%{title}%")).limit(limit).all()
+    movies = db.query(Movie).filter(Movie.title.ilike(f"%{title}%")).limit(limit).all()
     if not movies:
         raise HTTPException(status_code=404, detail="Movie not found")
     return _movies_to_dicts(movies, db, user_id=user_id)
@@ -105,8 +102,7 @@ def list_movies(
 ):
     _require_user(db, user_id)
     movies = (
-        db.query(Movie).order_by(Movie.movie_id.asc()
-                                 ).offset(offset).limit(limit).all()
+        db.query(Movie).order_by(Movie.movie_id.asc()).offset(offset).limit(limit).all()
     )
     return _movies_to_dicts(movies, db, user_id=user_id)
 
@@ -175,8 +171,7 @@ def popular_recommendations(
     # Avery #9.3: compute popularity score and apply LIMIT in SQL so we don't load every movie
     # Jared #1.2: popularity score uses rating count (not review count)
     score = _popularity_score_expr().label("popularity_score")
-    q = db.query(Movie, score).outerjoin(
-        Rating, Rating.movie_id == Movie.movie_id)
+    q = db.query(Movie, score).outerjoin(Rating, Rating.movie_id == Movie.movie_id)
     if genre:
         q = q.join(Movie.genres).filter(Genre.name.ilike(f"%{genre}%"))
     if exclude_watched and user_id is not None:
@@ -211,8 +206,7 @@ TRENDING_PERIODS = {
 @router.get("/trending")
 def trending_movies(
     period: str = Query("7d", description="Time window: 24h, 7d, 30d, or all"),
-    genre: Optional[str] = Query(
-        None, description="Restrict to a single genre"),
+    genre: Optional[str] = Query(None, description="Restrict to a single genre"),
     media_type: Optional[str] = Query(None, description="movie or tv"),
     limit: int = Query(10, ge=1, le=50),
     user_id: Optional[int] = Query(
@@ -273,15 +267,12 @@ def trending_movies(
     q = (
         db.query(
             Movie,
-            func.coalesce(rating_subq.c.recent_ratings,
-                          0).label("recent_ratings"),
+            func.coalesce(rating_subq.c.recent_ratings, 0).label("recent_ratings"),
             func.coalesce(rating_subq.c.recent_avg_rating, 0).label(
                 "recent_avg_rating"
             ),
-            func.coalesce(review_subq.c.recent_reviews,
-                          0).label("recent_reviews"),
-            func.coalesce(watch_subq.c.recent_watches,
-                          0).label("recent_watches"),
+            func.coalesce(review_subq.c.recent_reviews, 0).label("recent_reviews"),
+            func.coalesce(watch_subq.c.recent_watches, 0).label("recent_watches"),
             score_expr.label("trending_score"),
         )
         .outerjoin(rating_subq, rating_subq.c.movie_id == Movie.movie_id)
@@ -301,8 +292,7 @@ def trending_movies(
         watched_rows = (
             db.query(WatchHistory.movie_id)
             .filter(
-                WatchHistory.user_id == user_id, WatchHistory.movie_id.in_(
-                    movie_ids)
+                WatchHistory.user_id == user_id, WatchHistory.movie_id.in_(movie_ids)
             )
             .distinct()
             .all()
@@ -352,8 +342,7 @@ def recommendations_by_year(
     from datetime import date
 
     if year > date.today().year:
-        raise HTTPException(
-            status_code=400, detail="year cannot be in the future")
+        raise HTTPException(status_code=400, detail="year cannot be in the future")
     _require_user(db, user_id)
     movies = db.query(Movie).filter(Movie.release_year == year).all()
     if exclude_watched and user_id is not None:
