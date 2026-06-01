@@ -33,7 +33,6 @@ class FormattedReview(BaseModel):
     rating: Optional[int] = None
 
 
-@router.post("/{movie_id}/reviews")
 def add_review(movie_id: int, body: ReviewCreate, db: Session = Depends(get_db)):
     movie = db.query(Movie).filter(Movie.movie_id == movie_id).first()
     if not movie:
@@ -93,7 +92,6 @@ def add_review(movie_id: int, body: ReviewCreate, db: Session = Depends(get_db))
         raise HTTPException(status_code=400, detail="Could not save review")
 
 
-@router.get("/{movie_id}/reviews", response_model=List[FormattedReview])
 def get_reviews(
     movie_id: int,
     # Jared #1.13 / Avery #10.20: default False, optional

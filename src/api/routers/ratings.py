@@ -30,7 +30,6 @@ class RatingsResponse(BaseModel):
     ratings: List[FormattedRating]
 
 
-@router.post("/{movie_id}/ratings")
 def add_rating(movie_id: int, body: RatingCreate, db: Session = Depends(get_db)):
     if not 1 <= body.rating <= 5:
         raise HTTPException(status_code=400, detail="Rating must be between 1 and 5")
@@ -70,7 +69,6 @@ def add_rating(movie_id: int, body: RatingCreate, db: Session = Depends(get_db))
         raise HTTPException(status_code=400, detail="Could not save rating")
 
 
-@router.get("/{movie_id}/ratings", response_model=RatingsResponse)
 def get_ratings(  # Avery #9.9: renamed from get_reviews to get_ratings
     movie_id: int,
     db: Session = Depends(get_db),
