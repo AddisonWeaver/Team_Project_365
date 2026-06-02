@@ -24,11 +24,15 @@ Avery #9.16: instructions for running the API locally.
    ```
    alembic upgrade head
    ```
-5. Start the API:
+5. For our fake-data use in terminal:
+   ```
+   python generate_fake_data.py --dsn "<your extennal databaseurl from render>"
+   ```
+7. Start the API:
    ```
    uvicorn src.main:app --reload
    ```
-6. Open the interactive docs at http://localhost:8000/docs.
+8. Open the interactive docs at http://localhost:8000/docs.
 
 Deployment is on Render at https://team-project-365.onrender.com/.
 
